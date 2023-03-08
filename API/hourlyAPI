@@ -1,0 +1,8 @@
+const express = require('express')
+
+const api = express()
+
+const HOST = 'localhost'
+const PORT = 8888
+
+api.listen(PORT, () => console.log('hello'))

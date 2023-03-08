@@ -1,6 +1,7 @@
 import react, { useState, useEffect, isValidElement } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, TouchableOpacity, View, Dimensions } from 'react-native';
+import { axios } from 'axios';
 
 const screen = Dimensions.get('window');
 
@@ -14,10 +15,18 @@ const getRemaining = (time) => {
   return {hours: formatNumber(hours), mins: formatNumber(mins), secs: formatNumber(secs) }
 }
 
+const handleOneHour = () => {
+  // axios.post('', 'oneHour')
+}
+
+const handleTwoHour = () => {
+  console.log("It's been two hours man");
+}
+
 
 export default function App() {
   
-  const [remainingSecs, setRemainingSecs] = useState(0);
+  const [remainingSecs, setRemainingSecs] = useState(3599);
   const [isActive, setIsActive] = useState(false);
   const { hours, mins, secs } = getRemaining(remainingSecs);
 
@@ -49,10 +58,10 @@ export default function App() {
     }
 
     if(hours == 1 && mins == 0 && secs == 0){
-      console.log("You Have reached One hour get off your phone");
+      handleOneHour();
     }
     if(hours == 2 && mins == 0 && secs == 0){
-        console.log("At 2 Hours get Off your phone");
+      handleTwoHour();
     }
     if(hours == 24 && mins == 0 && secs == 0){
       reset();
