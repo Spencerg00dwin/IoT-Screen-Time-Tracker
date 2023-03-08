@@ -23,10 +23,25 @@ const handleTwoHour = () => {
   console.log("It's been two hours man");
 }
 
+const handleButton = (isActive, toggle) => {
+  if(isActive){
+    return (
+      <TouchableOpacity onPress={toggle} style={styles.buttonPause}>
+          <Text style={styles.buttonPauseText}>Pause</Text>
+      </TouchableOpacity>)
+      }
+    else{
+      return (        
+      <TouchableOpacity onPress={toggle} style={styles.button}>
+        <Text style={styles.buttonText}>Start</Text>
+      </TouchableOpacity>
+    )
+    }
+}
 
 export default function App() {
   
-  const [remainingSecs, setRemainingSecs] = useState(3599);
+  const [remainingSecs, setRemainingSecs] = useState(0);
   const [isActive, setIsActive] = useState(false);
   const { hours, mins, secs } = getRemaining(remainingSecs);
 
@@ -37,15 +52,6 @@ export default function App() {
     setRemainingSecs(0);
     setIsActive(false);
   }
-
-  // useEffect(() => {
-  //   if(hours == 1){
-  //     console.log("You Have reached One hour get off your phone");
-  //   }
-  //   if(hours == 2){
-  //       console.log("At 2 Hours get Off your phone");
-  //     }
-  // }, [])
 
   useEffect(() => {
     let interval = null;
@@ -76,9 +82,7 @@ export default function App() {
     <View style={styles.container}>
       <StatusBar style="light-content" />
         <Text style={styles.timerText}>{`${hours}:${mins}:${secs}`}</Text>
-        <TouchableOpacity onPress={toggle} style={styles.button}>
-          <Text style={styles.buttonText}>{isActive ? 'Pause' : 'Start'}</Text>
-      </TouchableOpacity>
+          {handleButton(isActive, toggle)}
       <TouchableOpacity onPress={reset} style={[styles.button, styles.buttonReset]}>
           <Text style={[styles.buttonText, styles.buttonTextReset]}>Reset</Text>
       </TouchableOpacity>
@@ -93,18 +97,33 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  button: { 
+  buttonPause: {
     borderWidth: 10,
-    borderColor: '#B9AAFF',
+    borderColor: '#FFEF00',
     width: screen.width / 2,
     height: screen.width / 2,
     borderRadius: screen.width / 2,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    marginTop: 40
+  },
+  button: { 
+    borderWidth: 10,
+    borderColor: '#138808',
+    width: screen.width / 2,
+    height: screen.width / 2,
+    borderRadius: screen.width / 2,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 40
   },
   buttonText: {
     fontSize: 45, 
-    color: '#B9AAFF'
+    color: '#138808'
+  },
+  buttonPauseText: {
+    fontSize: 45, 
+    color: '#FFEF00'
   },
   timerText: {
     color: '#fff',
@@ -112,10 +131,10 @@ const styles = StyleSheet.create({
     marginBottom: 20
   }, 
   buttonReset: {
-    marginTop: 20, 
-    borderColor: '#FF851B',
+    marginTop: 90, 
+    borderColor: '#8B0000',
   },
   buttonTextReset: {
-    color: '#FF851B'
+    color: '#8B0000'
   }
 });
