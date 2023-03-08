@@ -17,7 +17,17 @@ const getRemaining = (time) => {
 
 const handleOneHour = () => {
   // axios.post('', 'oneHour')
+  console.log('in one hour');
+  fetch('https://x8ki-letl-twmt.n7.xano.io/api:QzsIV-92:v1/hours', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body:{
+      numHours: JSON.stringify(60)
+    },
+  });
 }
+
+
 
 const handleTwoHour = () => {
   console.log("It's been two hours man");
@@ -41,7 +51,7 @@ const handleButton = (isActive, toggle) => {
 
 export default function App() {
   
-  const [remainingSecs, setRemainingSecs] = useState(0);
+  const [remainingSecs, setRemainingSecs] = useState(3599);
   const [isActive, setIsActive] = useState(false);
   const { hours, mins, secs } = getRemaining(remainingSecs);
 
