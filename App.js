@@ -21,9 +21,9 @@ const handleReset = () => {
   // .then(res => console.log(res))
 }
 
+//Going to either add these Handle functions for each hourly threshold or just have one function that does it for every hour.
+//will need better logic for second approach
 const handleOneHour = () => {
-  
-  
   fetch('https://x8ki-letl-twmt.n7.xano.io/api:QzsIV-92:v1/hours', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
