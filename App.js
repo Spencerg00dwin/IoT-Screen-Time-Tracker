@@ -61,6 +61,9 @@ export default function App() {
   const [remainingSecs, setRemainingSecs] = useState(3599);
   const [isActive, setIsActive] = useState(false);
   const { hours, mins, secs } = getRemaining(remainingSecs);
+  //Modal
+  const [modalVisible, setModalVisible] = useState(false);
+
 
   const toggle = () => {
     setIsActive(!isActive);
@@ -97,11 +100,46 @@ export default function App() {
 
 
   return (
-    <View style={styles.container}>
+    <View style={styles.container}> 
+      {/* Modal */}
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          Alert.alert('Modal has been closed.');
+          setModalVisible(!modalVisible);
+        }}>
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <Text style={styles.bigModalText}>Are you sure?</Text>
+
+            <Pressable
+              style={[styles.button, styles.yesModalButton]}
+              onPress={() => setModalVisible(!modalVisible)}>
+              <Text style={styles.modalText}>Cancel</Text>
+            </Pressable>
+            <Pressable
+              style={[styles.button, styles.noModalButton]}
+              onPress={() => {
+                reset();
+                setModalVisible(!modalVisible);
+              }}
+              >
+              <Text style={styles.modalText}>Reset</Text>
+            </Pressable>
+
+          </View>
+        </View>
+      </Modal>
+
       <StatusBar style="light-content" />
         <Text style={styles.timerText}>{`${hours}:${mins}:${secs}`}</Text>
           {handleButton(isActive, toggle)}
-      <TouchableOpacity onPress={reset} style={[styles.button, styles.buttonReset]}>
+      {/* <TouchableOpacity onPress={reset} style={[styles.button, styles.buttonReset]}> */}
+      {/* //need to add a call to reset() when the modal button is clicked */}
+      <TouchableOpacity onPress={() => setModalVisible(true)} style={[styles.button, styles.buttonReset]}>
+      {/* <TouchableOpacity onPress={reset} style={[styles.button, styles.buttonReset]}> */}
           <Text style={[styles.buttonText, styles.buttonTextReset]}>Reset</Text>
       </TouchableOpacity>
     </View>
@@ -154,5 +192,59 @@ const styles = StyleSheet.create({
   },
   buttonTextReset: {
     color: '#8B0000'
+  },
+  //Modal
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 22,
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 35,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  bigModalText: {
+    // marginBottom: ,
+    textAlign: 'center',
+    color: '#07121B',
+    fontWeight: 900,
+    fontSize: 20
+  },
+  modalText: {
+    textAlign: 'center',
+    color: '#07121B',
+    fontWeight: 700
+  },
+  noModalButton: {
+    borderWidth: 10,
+    borderColor: '#8B0000',
+    width: screen.width / 2,
+    height: screen.width / 2 - 125,
+    borderRadius: screen.width / 2,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 20
+  },
+  yesModalButton: {
+    borderWidth: 10,
+    borderColor: '#138808',
+    width: screen.width / 2,
+    height: screen.width / 2 - 125,
+    borderRadius: screen.width / 2,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 30
   }
 });
