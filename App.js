@@ -1,7 +1,7 @@
 import react, { useState, useEffect, isValidElement } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, TouchableOpacity, View, Dimensions } from 'react-native';
-import { axios } from 'axios';
+import { Alert, Modal, Pressable, StyleSheet, Text, TouchableOpacity, View, Dimensions } from 'react-native';
+
 
 const screen = Dimensions.get('window');
 
@@ -15,22 +15,29 @@ const getRemaining = (time) => {
   return {hours: formatNumber(hours), mins: formatNumber(mins), secs: formatNumber(secs) }
 }
 
+const handleReset = () => {
+  
+  fetch('https://x8ki-letl-twmt.n7.xano.io/api:QzsIV-92:v1/deleteQueries')
+  // .then(res => console.log(res))
+}
+
 const handleOneHour = () => {
-  // axios.post('', 'oneHour')
-  console.log('in one hour');
+  
+  
   fetch('https://x8ki-letl-twmt.n7.xano.io/api:QzsIV-92:v1/hours', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body:{
-      numHours: JSON.stringify(60)
-    },
-  });
+    body: JSON.stringify({
+      numHours: 1
+    }),
+  })
+  // .then(res => console.log(res))
 }
 
 
 
 const handleTwoHour = () => {
-  console.log("It's been two hours man");
+  // console.log("It's been two hours man");
 }
 
 const handleButton = (isActive, toggle) => {
@@ -61,6 +68,7 @@ export default function App() {
   const reset = () => {
     setRemainingSecs(0);
     setIsActive(false);
+    handleReset();
   }
 
   useEffect(() => {
