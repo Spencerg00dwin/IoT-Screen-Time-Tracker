@@ -7,7 +7,6 @@ const screen = Dimensions.get('window');
 
 const formatNumber = number => `0${number}`.slice(-2)
 
-
 const getRemaining = (time) => {
   const hours = Math.floor(time / 3600);
   const mins = Math.floor(time / 60) - (hours * 60);
@@ -16,28 +15,19 @@ const getRemaining = (time) => {
 }
 
 const handleReset = () => {
-  
   fetch('https://x8ki-letl-twmt.n7.xano.io/api:QzsIV-92:v1/deleteQueries')
-  // .then(res => console.log(res))
 }
 
-//Going to either add these Handle functions for each hourly threshold or just have one function that does it for every hour.
-//will need better logic for second approach
-const handleOneHour = () => {
+
+const handleHourChange = (hours) => {
   fetch('https://x8ki-letl-twmt.n7.xano.io/api:QzsIV-92:v1/hours', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      numHours: 1
+      numHours: hours
     }),
   })
-  // .then(res => console.log(res))
-}
-
-
-
-const handleTwoHour = () => {
-  // console.log("It's been two hours man");
+  
 }
 
 const handleButton = (isActive, toggle) => {
@@ -58,12 +48,11 @@ const handleButton = (isActive, toggle) => {
 
 export default function App() {
   
-  const [remainingSecs, setRemainingSecs] = useState(3599);
+  const [remainingSecs, setRemainingSecs] = useState(0);
   const [isActive, setIsActive] = useState(false);
   const { hours, mins, secs } = getRemaining(remainingSecs);
-  //Modal
+  const [prevHour, setPrevHour] = useState(0);
   const [modalVisible, setModalVisible] = useState(false);
-
 
   const toggle = () => {
     setIsActive(!isActive);
@@ -84,16 +73,10 @@ export default function App() {
       clearInterval(interval);
     }
 
-    if(hours == 1 && mins == 0 && secs == 0){
-      handleOneHour();
+    if(hours > prevHour && mins == 0 && secs == 0){
+      setPrevHour(hours - 1);
+      handleHourChange(hours)
     }
-    if(hours == 2 && mins == 0 && secs == 0){
-      handleTwoHour();
-    }
-    if(hours == 24 && mins == 0 && secs == 0){
-      reset();
-  }
-
 
     return () => clearInterval(interval);
   }, [isActive, remainingSecs])
@@ -101,7 +84,6 @@ export default function App() {
 
   return (
     <View style={styles.container}> 
-      {/* Modal */}
       <Modal
         animationType="slide"
         transparent={true}
@@ -136,10 +118,7 @@ export default function App() {
       <StatusBar style="light-content" />
         <Text style={styles.timerText}>{`${hours}:${mins}:${secs}`}</Text>
           {handleButton(isActive, toggle)}
-      {/* <TouchableOpacity onPress={reset} style={[styles.button, styles.buttonReset]}> */}
-      {/* //need to add a call to reset() when the modal button is clicked */}
       <TouchableOpacity onPress={() => setModalVisible(true)} style={[styles.button, styles.buttonReset]}>
-      {/* <TouchableOpacity onPress={reset} style={[styles.button, styles.buttonReset]}> */}
           <Text style={[styles.buttonText, styles.buttonTextReset]}>Reset</Text>
       </TouchableOpacity>
     </View>
@@ -193,7 +172,6 @@ const styles = StyleSheet.create({
   buttonTextReset: {
     color: '#8B0000'
   },
-  //Modal
   centeredView: {
     flex: 1,
     justifyContent: 'center',
@@ -216,7 +194,6 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   bigModalText: {
-    // marginBottom: ,
     textAlign: 'center',
     color: '#07121B',
     fontWeight: 900,
@@ -239,7 +216,7 @@ const styles = StyleSheet.create({
   },
   yesModalButton: {
     borderWidth: 10,
-    borderColor: '#138808',
+    borderColor: 'grey',
     width: screen.width / 2,
     height: screen.width / 2 - 125,
     borderRadius: screen.width / 2,
