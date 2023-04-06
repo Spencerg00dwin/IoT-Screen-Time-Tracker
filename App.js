@@ -1,7 +1,6 @@
-import react, { useState, useEffect, isValidElement } from 'react';
+import react, { useState, useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { Alert, Modal, Pressable, StyleSheet, Text, TouchableOpacity, View, Dimensions } from 'react-native';
-import e from 'express';
 
 
 const screen = Dimensions.get('window');
@@ -53,7 +52,7 @@ export default function App() {
   const [isActive, setIsActive] = useState(false);
   const { hours, mins, secs } = getRemaining(remainingSecs);
   // const [prevHour, setPrevHour] = useState(0);
-  const [prevSecs, setPrevSecs] = useState(0);
+  // const [prevSecs, setPrevSecs] = useState(0);
   const [modalVisible, setModalVisible] = useState(false);
 
   const toggle = () => {
@@ -83,25 +82,16 @@ export default function App() {
     //   handleHourChange(hours)
     // }
 
-    //Code for Presentation that changes every 2 seconds
-
-    console.log("secs: ", secs);   
-    if((secs == 1) || (secs - 2) >= prevSecs){                   
-      if(secs > 1){
-        setPrevSecs(secs - 2);
-        console.log("prevSecs: ", prevSecs);        
-      }   
-
-      if(secs == 1){
-        handleHourChange(secs);
-      }
-      else{
-        handleHourChange(secs / 2);
-        console.log("Secs/2: ", secs/2);
+    //Code for Presentation that changes every 2 seconds      
+    if((secs % 2 == 0)){   
+        console.log("Secs: ", (secs / 2) - 1);
+      if(secs > 0){
+        handleHourChange((secs / 2) - 1);
       }
     }
+
     return () => clearInterval(interval);
-  }, [isActive, remainingSecs, prevSecs])
+  }, [isActive, remainingSecs])
 
   return (
     <View style={styles.container}> 
