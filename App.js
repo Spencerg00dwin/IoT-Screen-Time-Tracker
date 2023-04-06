@@ -1,6 +1,7 @@
 import react, { useState, useEffect, isValidElement } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { Alert, Modal, Pressable, StyleSheet, Text, TouchableOpacity, View, Dimensions } from 'react-native';
+import e from 'express';
 
 
 const screen = Dimensions.get('window');
@@ -47,11 +48,12 @@ const handleButton = (isActive, toggle) => {
 }
 
 export default function App() {
-  
+
   const [remainingSecs, setRemainingSecs] = useState(0);
   const [isActive, setIsActive] = useState(false);
   const { hours, mins, secs } = getRemaining(remainingSecs);
-  const [prevHour, setPrevHour] = useState(0);
+  // const [prevHour, setPrevHour] = useState(0);
+  const [prevSecs, setPrevSecs] = useState(0);
   const [modalVisible, setModalVisible] = useState(false);
 
   const toggle = () => {
@@ -61,7 +63,7 @@ export default function App() {
     setRemainingSecs(0);
     setIsActive(false);
     handleReset();
-  }
+  }  
 
   useEffect(() => {
     let interval = null;
@@ -73,14 +75,33 @@ export default function App() {
       clearInterval(interval);
     }
 
-    if(hours > prevHour && mins == 0 && secs == 0){
-      setPrevHour(hours - 1);
-      handleHourChange(hours)
+    //Original Code for Actual Functionality over an hourly interval range
+    // if((hours == 0 && mins == 0 && secs == 1) || (hours > prevHour && mins == 0 && secs == 0)){
+    //   if(hours != 0){
+    //     setPrevHour(hours - 1);
+    //   }
+    //   handleHourChange(hours)
+    // }
+
+    //Code for Presentation that changes every 2 seconds
+
+    console.log("secs: ", secs);   
+    if((secs == 1) || (secs - 2) >= prevSecs){                   
+      if(secs > 1){
+        setPrevSecs(secs - 2);
+        console.log("prevSecs: ", prevSecs);        
+      }   
+
+      if(secs == 1){
+        handleHourChange(secs);
+      }
+      else{
+        handleHourChange(secs / 2);
+        console.log("Secs/2: ", secs/2);
+      }
     }
-
     return () => clearInterval(interval);
-  }, [isActive, remainingSecs])
-
+  }, [isActive, remainingSecs, prevSecs])
 
   return (
     <View style={styles.container}> 
@@ -225,3 +246,4 @@ const styles = StyleSheet.create({
     marginTop: 30
   }
 });
+ 

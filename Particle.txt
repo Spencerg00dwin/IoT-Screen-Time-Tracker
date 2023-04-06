@@ -1,0 +1,87 @@
+Particle Web IDE Code for Microcontroller
+
+// This #include statement was automatically added by the Particle IDE.
+#include <neopixel.h>
+
+#include "Particle.h"
+#include "neopixel.h"
+
+SYSTEM_MODE(AUTOMATIC);
+
+// IMPORTANT: Set pixel COUNT, PIN and TYPE
+#define PIXEL_PIN D2
+#define PIXEL_COUNT 12
+#define PIXEL_TYPE WS2812B
+
+Adafruit_NeoPixel strip(PIXEL_COUNT, PIXEL_PIN, PIXEL_TYPE);
+
+void setup() {
+    strip.begin();
+    strip.show(); // Initialize all pixels to 'off'
+    Particle.function("xano", ledToggle);
+}
+
+void loop() { 
+    
+}
+
+void setcolor(uint16_t red, uint16_t green, uint16_t blue){
+    for(uint16_t i=0; i < strip.numPixels(); i++) {
+        strip.setPixelColor(i, red, green, blue);
+    }
+    strip.show();
+}
+
+ 
+int ledToggle(String cmd) {
+    if(cmd == "100"){
+        strip.clear();
+        strip.show();
+        return 1;
+    }
+    else if(cmd == "0"){
+        setcolor(0, 255, 0);
+        return 1;
+    }
+    else if(cmd == "1"){
+        setcolor(64, 255, 0);
+        return 1;
+    }
+    else if(cmd == "2"){
+        setcolor(128, 255, 0);
+        return 1;
+    }
+    else if(cmd == "3"){
+        setcolor(191, 255, 0);
+        return 1;
+    }
+    else if(cmd == "4"){
+        setcolor(255, 255, 0);
+        return 1;
+    }
+    else if(cmd == "5"){
+        setcolor(255, 191, 0);
+        return 1;
+    }
+    else if(cmd == "6"){
+        setcolor(255, 128, 0);
+        return 1;
+    }
+    else if(cmd == "7"){
+        setcolor(255, 64, 0);
+        return 1;
+    }
+    else if(cmd == "8"){
+        setcolor(255, 32, 0);
+        return 1;
+    }
+    else if(cmd == "9"){
+        setcolor(255, 0, 0);
+        return 1;
+    }
+    else{
+        Particle.publish("no hour recieved");
+        return -1;
+    }
+    
+    }
