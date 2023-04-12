@@ -51,8 +51,6 @@ export default function App() {
   const [remainingSecs, setRemainingSecs] = useState(0);
   const [isActive, setIsActive] = useState(false);
   const { hours, mins, secs } = getRemaining(remainingSecs);
-  // const [prevHour, setPrevHour] = useState(0);
-  // const [prevSecs, setPrevSecs] = useState(0);
   const [modalVisible, setModalVisible] = useState(false);
 
   const toggle = () => {
@@ -129,8 +127,9 @@ export default function App() {
       <StatusBar style="light-content" />
         <Text style={styles.timerText}>{`${hours}:${mins}:${secs}`}</Text>
           {handleButton(isActive, toggle)}
-      <TouchableOpacity onPress={() => setModalVisible(true)} style={[styles.button, styles.buttonReset]}>
-          <Text style={[styles.buttonText, styles.buttonTextReset]}>Reset</Text>
+      {/* <TouchableOpacity onPress={() => setModalVisible(true)} style={[styles.button, styles.buttonReset]}> */}
+      <TouchableOpacity onPress={() => setModalVisible(true)} style={[styles.buttonReset]}>
+          <Text style={[styles.buttonTextReset]}>Reset</Text>
       </TouchableOpacity>
     </View>
   );
@@ -142,26 +141,26 @@ const styles = StyleSheet.create({
     backgroundColor: '#07121B',
     alignItems: 'center',
     justifyContent: 'center',
-  },
+  },  
   buttonPause: {
     borderWidth: 10,
     borderColor: '#FFEF00',
-    width: screen.width / 2,
-    height: screen.width / 2,
-    borderRadius: screen.width / 2,
+    width: screen.width / 1.5,
+    height: screen.width / 1.5,
+    borderRadius: screen.width / 1.5,
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 40
+    marginTop: 100
   },
   button: { 
     borderWidth: 10,
     borderColor: '#138808',
-    width: screen.width / 2,
-    height: screen.width / 2,
-    borderRadius: screen.width / 2,
+    width: screen.width / 1.5,
+    height: screen.width / 1.5,
+    borderRadius: screen.width / 1.5,
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 40
+    marginTop: 100
   },
   buttonText: {
     fontSize: 45, 
@@ -181,7 +180,9 @@ const styles = StyleSheet.create({
     borderColor: '#8B0000',
   },
   buttonTextReset: {
-    color: '#8B0000'
+    fontSize: 20, 
+    color: '#8B000'
+    // color: '#07121B'    
   },
   centeredView: {
     flex: 1,
