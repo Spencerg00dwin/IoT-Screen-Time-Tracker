@@ -1,5 +1,6 @@
 import react, { useState, useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
+import BackgroundTimer from 'react-native-background-timer';
 import { Alert, Modal, Pressable, StyleSheet, Text, TouchableOpacity, View, Dimensions } from 'react-native';
 
 
@@ -45,6 +46,34 @@ const handleButton = (isActive, toggle) => {
     )
     }
 }
+
+// Get the current time in your local timezone
+const localTime = new Date();
+
+// Calculate the time difference between your local time and EST time
+const estTimeDiff = -5 * 60 * 60 * 1000; // EST is 5 hours behind UTC
+
+// Set the target time to 9:30 am EST
+const targetTime = new Date(
+  localTime.getFullYear(),
+  localTime.getMonth(),
+  localTime.getDate(),
+  8,
+  30,
+  0
+);
+
+// Adjust the target time to EST timezone
+targetTime.setTime(targetTime.getTime() + estTimeDiff);
+
+// Calculate the time interval until the target time
+const timeInterval = targetTime.getTime() - localTime.getTime();
+
+// Set the interval timer to run your function
+BackgroundTimer.setTimeout(() => {
+  handleReset();
+}, timeInterval);
+
 
 export default function App() {
 
